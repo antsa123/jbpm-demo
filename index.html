@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<head>
+<style>
+#sailio1 {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 400px;
+	heigth: 250px;
+	z-index: 9;
+	margin-top: -125px;
+	margin-left: -200px;
+	text-align: center;
+	font-size: 25px;
+}
+
+#lentokone {
+	position: absolute;
+	right: 10%;
+	top: 25%;
+	display: block;
+	max-width: 100px;
+	max-height: 60px;
+	width: auto;
+	height: auto;
+	z-index: 4;
+	animation-name: lento;
+	animation-duration: 20s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+
+.pilvet {
+	max-width: 20%;
+	width: auto;
+	height: auto;
+}
+
+#pilvi1{
+	position: absolute;
+	top: 55%;
+	left: 20%
+	display: block;
+	z-index:10;
+	animation-name: pilvi1liike;
+	animation-duration: 40s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+#pilvi2{
+	position: absolute;
+	top: 15%;
+	left: 45%
+	display: block;
+	z-index: 5;
+	animation-name: pilvi2liike;
+	animation-duration: 40s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+#pilvi3{
+	position: absolute;
+	top: 18%;
+	left: 45%
+	display: block;
+	z-index: 3;
+	animation-name: pilvi3liike;
+	animation-duration: 30s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+#pilvi5{
+	position: absolute;
+	top: 18%;
+	left: 45%
+	display: block;
+	z-index: 6;
+	animation-name: pilvi5liike;
+	animation-duration: 30s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+@keyframes lento {
+    0%   {right: -10%; top: 25%;}
+    100% {right: 110%; top: 25%;}
+}
+
+@keyframes pilvi1liike {
+	0%   {left: 20%; top: 55%;}
+	100% {left: 90%; top: 55%;}
+}
+
+@keyframes pilvi2liike {
+	0%   {left: 45%; top: 15%;}
+	100% {left: 110%; top: 15%;}
+}
+
+@keyframes pilvi3liike {
+	0%   {left: 15%; top: 15%;}
+	100% {left: 90%; top: 15%;}
+}
+
+@keyframes pilvi5liike {
+	0%   {left: 10%; top: 22%;}
+	100% {left: 90%; top: 22%;}
+}
+
+</style>
+</head>
+<body class="w3-blue">
+	<img src="lentsikka.png" id="lentokone">
+	<img src="pilvi.png" id="pilvi1" class="pilvet">
+	<img src="pilvi.png" id="pilvi2" class="pilvet">
+	<img src="pilvi.png" id="pilvi3" class="pilvet">
+	<img src="pilvi.png" id="pilvi5" class="pilvet">
+	<div class="w3-container" id="sailio1">
+		<h1>Hiertääkö arki?</h1>
+		<button class="w3-button w3-indigo w3-round-large" id="nappi">
+			Nappaa ylläriloma!
+		</button>
+	</div>
+</body>
+
+
+</html>
