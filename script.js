@@ -1,6 +1,11 @@
 ﻿$(document).ready(function() {
 	$("#nappi").click(function(){
-		$("#sailio1").hide();
-		$("#sailio2").show();
+		$("#sailio1").fadeOut();
+		$("#sailio3").fadeIn();
+	});
+	
+	$("#ostonappi").click(function(){
+		$("#sailio3").fadeOut();
+		$("#sailio2").fadeIn();
 	});
 });
