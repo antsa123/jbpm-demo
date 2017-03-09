@@ -1,11 +1,15 @@
 ﻿$(document).ready(function() {
+	// tähän prosessin aloitus POST
+	
 	$("#nappi").click(function(){
 		$("#sailio1").fadeOut();
-		$("#sailio3").fadeIn();
+		$("#sailio2").fadeIn();
+		// Tähän GET skyscanner APIsta
 	});
 	
 	$("#ostonappi").click(function(){
 		$("#sailio3").fadeOut();
 		$("#sailio2").fadeIn();
+		// Tähän prosesin onnistunut lopetus POST
 	});
 });
