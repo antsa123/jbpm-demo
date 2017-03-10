@@ -4,19 +4,19 @@ $(document).ready(function() {
 	
 	// tähän prosessin aloitus POST
 	$.ajax({
-		type: "POST"
-		url: "", //mikä approute
+		type: "POST",
+		url: "" //mikä approute
 		
 	});
 	
 	function matkavastaus(data) {
-		obj = JSON.parse(data)
+		obj = JSON.parse(data);
 		var start = obj.start;
 		var stop = obj.stop;
 		var aika = obj.aika;
 		var hinta = obj.hinta;
-		$("#maaranpaa").text(start + " - " + stop)
-		$("hintajalahtoaika").html("Hinta: " + hinta + "<br>Lähtö huomenna kello " + aika)
+		$("#maaranpaa").text(start + " - " + stop);
+		$("#hintajalahtoaika").html("Hinta: " + hinta + "<br>Lähtö huomenna kello " + aika);
 		$("#sailio2").fadeOut();
 		$("#sailio3").fadeIn();
     }
