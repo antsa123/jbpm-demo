@@ -5,7 +5,7 @@ $(document).ready(function() {
 	// tähän prosessin aloitus POST
 	$.ajax({
 		type: "POST",
-		url: "" //mikä approute
+		url: "/start" //mikä approute
 		
 	});
 	
@@ -43,9 +43,16 @@ $(document).ready(function() {
 		
 		$.ajax({
 			type: "POST",
-			url: "", //mikä approute
+			url: "/finish", //mikä approute
 			success: ostovastaus
 		})
 		// Tähän prosesin onnistunut lopetus POST
 	});
 });
+
+$( window ).unload(function() {
+  $.ajax({
+		type: "POST"
+		url: "/abort"
+  });
+})
