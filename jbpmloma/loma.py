@@ -17,6 +17,9 @@ def index():
 @app.route('/start')
 def startProcess():
 
+    url = "http://localhost:8080/jbpm-console/rest/runtime/com.demounit:ASE-6050-Demo:1.0/process/ASE-6050-Demo.lentolippu/start"
+
+
     #aloitetaan jbpm prosessi
     #
 
@@ -37,6 +40,10 @@ def finishProcess():
 
     return 'hello'
 
+def checkOffer():
+
+    #Katso tarjous jbpm [POST]
+    pass
 
 @app.route('/skyscanner/')
 def haeLento():
