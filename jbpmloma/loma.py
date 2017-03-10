@@ -14,6 +14,30 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/start')
+def startProcess():
+
+    #aloitetaan jbpm prosessi
+    #
+
+    return 'hello'
+
+
+@app.route('/abort')
+def abortProcess():
+
+    #keskeytetään prosessi
+
+    return 'hello'
+
+@app.route('/finish')
+def finishProcess():
+
+    #lippu ostettu
+
+    return 'hello'
+
+
 @app.route('/skyscanner/')
 def haeLento():
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)

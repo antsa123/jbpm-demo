@@ -1,4 +1,3 @@
-const apiKey = "tu705911788977665986179742030436";
 
 $(document).ready(function() {
 	
@@ -52,7 +51,7 @@ $(document).ready(function() {
 
 $( window ).unload(function() {
   $.ajax({
-		type: "POST"
+		type: "POST",
 		url: "/abort"
   });
 })
