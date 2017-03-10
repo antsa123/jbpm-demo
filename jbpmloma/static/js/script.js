@@ -16,7 +16,7 @@ $(document).ready(function() {
 		var aika = obj.aika;
 		var hinta = obj.hinta;
 		$("#maaranpaa").text(start + " - " + stop);
-		$("#hintajalahtoaika").html("Hinta: " + hinta + "<br>Lähtö huomenna kello " + aika);
+		$("#hintajalahtoaika").html("Hinta: " + hinta +" €" + "<br>Lähtö huomenna kello " + aika);
 		$("#sailio2").fadeOut();
 		$("#sailio3").fadeIn();
     }
