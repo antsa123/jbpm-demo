@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="{{url_for('static', filename='./js/script.js')}}"></script>
 
 <head>
 <style>
@@ -15,7 +15,7 @@
 	width: 400px;
 	height: 250px;
 	z-index: 9;
-	margin-top: sdsda-125px;
+	margin-top: -125px;
 	margin-left: -200px;
 	text-align: center;
 	font-size: 25px;dcdc
@@ -154,11 +154,11 @@
 </style>
 </head>
 <body class="w3-blue">
-	<img src="lentsikka.png" id="lentokone">
-	<img src="pilvi.png" id="pilvi1" class="pilvet">
-	<img src="pilvi.png" id="pilvi2" class="pilvet">
-	<img src="pilvi.png" id="pilvi3" class="pilvet">
-	<img src="pilvi.png" id="pilvi5" class="pilvet">
+	<img src="{{url_for('static', filename='./images/lentsikka.png')}}" id="lentokone">
+	<img src="{{url_for('static', filename='./images/pilvi.png')}}" id="pilvi1" class="pilvet">
+	<img src="{{url_for('static', filename='./images/pilvi.png')}}" id="pilvi2" class="pilvet">
+	<img src="{{url_for('static', filename='./images/pilvi.png')}}" id="pilvi3" class="pilvet">
+	<img src="{{url_for('static', filename='./images/pilvi.png')}}" id="pilvi5" class="pilvet">
 	<div class="w3-container" id="sailio1">
 		<h1>Hiertääkö arki?</h1>
 		<button class="w3-button w3-indigo w3-round-large" id="nappi">
@@ -166,7 +166,7 @@
 		</button>
 	</div>
 	<div class="w3-container" id="sailio2">
-	<img src="infinityGif.gif">
+	<img src="/static/images/infinityGif.gif">
 	</div>
 	<div class="w3-container w3-blue" id="sailio3">
 		<h2 id="maaranpaa"> Helsinki - XXXXX</h2>
