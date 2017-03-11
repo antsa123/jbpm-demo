@@ -3,7 +3,6 @@ import requests
 import datetime
 import json
 from random import randrange
-from time import strftime
 
 app = Flask(__name__)
 

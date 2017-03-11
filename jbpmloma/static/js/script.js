@@ -1,13 +1,14 @@
 
 $(document).ready(function() {
 	
-	// tähän prosessin aloitus POST
+	// Prosessin aloitus
 	$.ajax({
 		type: "POST",
 		url: "/start" //mikä approute
 		
 	});
 	
+	// Suoritetaan, kun saadaan vastaus skyscannerilta
 	function matkavastaus(data) {
 		obj = JSON.parse(data);
 		var start = obj.start;
@@ -20,15 +21,18 @@ $(document).ready(function() {
 		$("#sailio3").fadeIn();
     }
 	
+	// Suoritetaan, kun saadaan prosessin lopetuksen vastaus
 	function ostovastaus() {
-		
+			$("#maaranpaa").text("Hyvää matkaa!");
+			$("#hintajalahtoaika").html("Sinut ohjattaisiin lipun ostoon kokoversiossa.");
+			$("#sailio2").fadeOut();
+			$("#sailio3").fadeIn();
 	}
 	
 	$("#nappi").click(function(){
 		$("#sailio1").fadeOut();
 		$("#sailio2").fadeIn();
-		// Tähän GET skyscanner APIsta
-
+		// GET skyscanner APIsta
 		$.ajax({
 			type: "GET",
 			url: "/skyscanner",
@@ -39,16 +43,16 @@ $(document).ready(function() {
 	$("#ostonappi").click(function(){
 		$("#sailio3").fadeOut();
 		$("#sailio2").fadeIn();
-		
+		// Prosessin lopetus
 		$.ajax({
 			type: "POST",
-			url: "/finish", //mikä approute
+			url: "/finish",
 			success: ostovastaus
 		})
-		// Tähän prosesin onnistunut lopetus POST
 	});
 });
 
+// Kutsutaan, kun ikkuna suljetaan tai sivulta poistutaan
 $( window ).unload(function() {
   $.ajax({
 		type: "POST",
