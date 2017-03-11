@@ -53,9 +53,9 @@ $(document).ready(function() {
 });
 
 // Kutsutaan, kun ikkuna suljetaan tai sivulta poistutaan
-$( window ).unload(function() {
+$( window ).on("unload", function() {
   $.ajax({
 		type: "POST",
 		url: "/abort"
   });
-})
+});
