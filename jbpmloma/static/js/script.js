@@ -1,10 +1,31 @@
 
+var ProcessID = 0;
+
+// Kutsutaan, kun ikkuna suljetaan tai sivulta poistutaan
+$(window).bind("beforeunload", function() {
+	
+	$.ajax({
+		type: "GET",
+		data: {
+			"ID": ProcessID // Tässä lähetetään prosessin ID parametrina
+			},
+		url: "/abort"
+	
+	});
+	return "Leaving page";
+});
+
 $(document).ready(function() {
+	
+	function tallennaID(data) {
+		ProcessID = data.ProcessID;
+	}
 	
 	// Prosessin aloitus TÄSSÄ VOISI VASTAUKSENA TALLENTAA PROSESSI IDN
 	$.ajax({
 		type: "POST",
-		url: "/start" //mikä approute
+		url: "/start", //mikä approute
+		success: tallennaID
 		
 	});
 	
@@ -50,12 +71,5 @@ $(document).ready(function() {
 			success: ostovastaus
 		})
 	});
-});
-
-// Kutsutaan, kun ikkuna suljetaan tai sivulta poistutaan
-$( window ).on("unload", function() {
-  $.ajax({
-		type: "POST",
-		url: "/abort"
-  });
+	
 });

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 import datetime
 import json
@@ -43,15 +43,18 @@ def startProcess():
     completeTask(seuraava)
 
     """TÄSSÄ VOITAISIIN PALAUTTAA PROSESSI ID CLIENT PUOLELLE"""
+    # dict muotoa { "ProcessID" : ID }
     return 'response'
 
 
 @app.route('/abort')
 def abortProcess():
-
+    
+    print("taalla")
     #miten prosessi ID tänne
     #Prosessi ID voidaan laittaa POST parametrina client puolelta!
-    prosessiID = 0
+    #prosessiID = 0
+    prosessiID = request.args.get("ID")
 
     #keskeytetään prosessi
     url = "http://localhost:8080/jbpm-console/rest/runtime/com.demounit:ASE-6050-Demo:1.0/process/instance/"+str(prosessiID)+"/abort"
