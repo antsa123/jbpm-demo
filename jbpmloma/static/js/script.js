@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
 	
-	// Prosessin aloitus
+	// Prosessin aloitus TÄSSÄ VOISI VASTAUKSENA TALLENTAA PROSESSI IDN
 	$.ajax({
 		type: "POST",
 		url: "/start" //mikä approute

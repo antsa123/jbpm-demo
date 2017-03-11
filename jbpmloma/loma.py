@@ -42,7 +42,7 @@ def startProcess():
     startTask(seuraava)
     completeTask(seuraava)
 
-
+    """TÄSSÄ VOITAISIIN PALAUTTAA PROSESSI ID CLIENT PUOLELLE"""
     return 'response'
 
 
@@ -50,6 +50,7 @@ def startProcess():
 def abortProcess():
 
     #miten prosessi ID tänne
+    #Prosessi ID voidaan laittaa POST parametrina client puolelta!
     prosessiID = 0
 
     #keskeytetään prosessi
