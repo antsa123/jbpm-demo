@@ -7,43 +7,114 @@ from time import strftime
 
 app = Flask(__name__)
 
+headers_jbpm = {
+        "Accept": "application/json",
+        "Authorization": "Basic YWRtaW46YWRtaW4="
+}
 
 @app.route('/')
 def index():
-    print(app.url_map)
+
+    #print(app.url_map)
     return render_template('index.html')
 
 
 @app.route('/start')
 def startProcess():
 
+
     url = "http://localhost:8080/jbpm-console/rest/runtime/com.demounit:ASE-6050-Demo:1.0/process/ASE-6050-Demo.lentolippu/start"
 
+    # aloitetaan jbpm prosessi
 
-    #aloitetaan jbpm prosessi
-    #
+    response = requests.post(url, headers=headers_jbpm)
+    json_in = response.json()
 
-    return 'hello'
+    # Otetaan porcessID talteen
+    prosessiID = json_in["id"]
+
+    # Haetaan seuraava taskID
+
+    #Kokeilua ---------------------------------------------------------------
+    seuraava = (nextTask(prosessiID))
+    startTask(seuraava)
+    completeTask(seuraava)
+    seuraava = (nextTask(prosessiID))
+    startTask(seuraava)
+    completeTask(seuraava)
+
+
+    return 'response'
 
 
 @app.route('/abort')
 def abortProcess():
 
-    #keskeytetään prosessi
+    #miten prosessi ID tänne
+    prosessiID = 0
 
-    return 'hello'
+    #keskeytetään prosessi
+    url = "http://localhost:8080/jbpm-console/rest/runtime/com.demounit:ASE-6050-Demo:1.0/process/instance/"+str(prosessiID)+"/abort"
+    response = requests.post(url, headers=headers_jbpm)
+    json_in = response.json()
+
+
+    #poistetaan prosessiId kirjanpidosta
+    return 'aborted'
 
 @app.route('/finish')
 def finishProcess():
 
     #lippu ostettu
 
-    return 'hello'
+    return 'finished'
 
+@app.route('/check')
 def checkOffer():
 
-    #Katso tarjous jbpm [POST]
-    pass
+    #tarjous katsottu
+
+    return 'checked'
+
+def startTask(taskID):
+
+    #Aloita jbpm task [POST]
+
+    url = "http://localhost:8080/jbpm-console/rest/task/"+str(taskID)+"/start"
+    response = requests.post(url, headers=headers_jbpm)
+    json_in = response.json()
+
+    return
+
+def nextTask(processID):
+
+    url = "http://localhost:8080/jbpm-console/rest/task/query?processInstanceId=" + str(processID)
+    response = requests.get(url, headers=headers_jbpm)
+    json_in = response.json()
+
+    # Parsitaan talteen seuraava processId:n taski
+
+
+    #Toka taski vuorossa
+    if (len(json_in["taskSummaryList"]) == 2):
+        nextTaskID = json_in["taskSummaryList"][1]["id"]
+
+    # Eka taski
+    else:
+        nextTaskID = json_in["taskSummaryList"][0]["id"]
+
+    print(nextTaskID)
+    return nextTaskID
+
+def completeTask(taskID):
+
+    #Suorita jbpm task [POST]
+    url = "http://localhost:8080/jbpm-console/rest/task/" + str(taskID) + "/complete/?map_hyvaksytty_out=true"
+    response = requests.post(url, headers=headers_jbpm)
+    json_in = response.json()
+
+    return
+
 
 @app.route('/skyscanner/')
 def haeLento():
@@ -78,6 +149,7 @@ def haeLento():
         kohdeID = kohde['OutboundLeg']['DestinationId']
         aika = str(kohde['QuoteDateTime']).split('T')
         aika = aika[1]
+
         for place in json_in['Places']:
             if (place['PlaceId'] == lahtoID):
                  lahtomaa = place['Name']
