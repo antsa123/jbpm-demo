@@ -30,54 +30,111 @@ def startProcess():
     json_in = response.json()
 
     # Otetaan porcessID talteen
-    prosessiID = json_in["id"]
+    processID = json_in["id"]
 
     # Haetaan seuraava taskID
 
     #Kokeilua ---------------------------------------------------------------
-    seuraava = (nextTask(prosessiID))
-    startTask(seuraava)
-    completeTask(seuraava)
-    seuraava = (nextTask(prosessiID))
-    startTask(seuraava)
-    completeTask(seuraava)
+    taskID = (nextTask(processID))
+    startTask(taskID)
+    completeTask(taskID)
+    taskID = (nextTask(processID))
+    startTask(taskID)
+    completeTask(taskID)
 
     """TÄSSÄ VOITAISIIN PALAUTTAA PROSESSI ID CLIENT PUOLELLE"""
-    # dict muotoa { "ProcessID" : ID }
-    return 'response'
+    #JSONissa?
+    return json.dumps({"procssID": processID})
 
 
 @app.route('/abort')
 def abortProcess():
     
     print("taalla")
-    #miten prosessi ID tänne
+
     #Prosessi ID voidaan laittaa POST parametrina client puolelta!
-    #prosessiID = 0
-    prosessiID = request.args.get("ID")
+    processID = request.args.get("ID")
+
+    print(processID)
 
     #keskeytetään prosessi
-    url = "http://localhost:8080/jbpm-console/rest/runtime/com.demounit:ASE-6050-Demo:1.0/process/instance/"+str(prosessiID)+"/abort"
+    url = "http://localhost:8080/jbpm-console/rest/runtime/com.demounit:ASE-6050-Demo:1.0/process/instance/"+str(processID)+"/abort"
     response = requests.post(url, headers=headers_jbpm)
     json_in = response.json()
 
-
-    #poistetaan prosessiId kirjanpidosta
     return 'aborted'
+
 
 @app.route('/finish')
 def finishProcess():
 
     #lippu ostettu
+    processID = request.args.get("ID")
+
+    taskID = (nextTask(processID))
+    startTask(taskID)
+    completeTask(taskID)
 
     return 'finished'
 
-@app.route('/check')
-def checkOffer():
 
-    #tarjous katsottu
+@app.route('/skyscanner/')
+def haeLento():
 
-    return 'checked'
+    processID = request.args.get("ID")
+
+    tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+    time = datetime.datetime.strftime(tomorrow,"%Y-%m-%d")
+    params = {
+        "apiKey" : "tu705911788977665986179742030436"
+    }
+    headers = {
+        "Accept" : "application/json"
+    }
+    url = "http://partners.api.skyscanner.net/apiservices/browseroutes/v1.0/FI/EUR/en-GB/FI/anywhere/"+time
+
+
+    response = requests.get(url,params=params,headers=headers)
+    json_in = response.json()
+    offer = chooseOffer(json_in)
+
+    """Suoritetaan eka taski tässä"""
+    #nextTask(processID)
+    #startTask(processID)
+    #completeTask(processID)
+
+    return offer
+
+def chooseOffer(json_in):
+
+    price = 1000
+    origin = 'Helsinki'
+    destination = 'Dubai'
+    time = '10:00:00'
+
+    if 'Quotes' in json_in:
+
+        destinationList = json_in['Quotes']
+
+
+        randomDestination = destinationList[randrange(0, len(destinationList))]
+
+        price = str(randomDestination['MinPrice'])
+        originID = randomDestination['OutboundLeg']['OriginId']
+        destinationID = randomDestination['OutboundLeg']['DestinationId']
+        time = str(randomDestination['QuoteDateTime']).split('T')
+        time = time[1]
+
+        for place in json_in['Places']:
+            if (place['PlaceId'] == originID):
+                origin = place['Name']
+            elif (place['PlaceId'] == destinationID):
+                destination = place['Name']
+
+    offer = json.dumps({'start': origin, 'stop': destination, 'aika': time, 'hinta': price})
+    print(offer)
+
+    return offer
 
 def startTask(taskID):
 
@@ -97,14 +154,8 @@ def nextTask(processID):
 
     # Parsitaan talteen seuraava processId:n taski
 
-
-    #Toka taski vuorossa
-    if (len(json_in["taskSummaryList"]) == 2):
-        nextTaskID = json_in["taskSummaryList"][1]["id"]
-
-    # Eka taski
-    else:
-        nextTaskID = json_in["taskSummaryList"][0]["id"]
+    # Toimiiko...
+    nextTaskID = json_in["taskSummaryList"][len(json_in["taskSummaryList"])-1]["id"]
 
     print(nextTaskID)
     return nextTaskID
@@ -119,52 +170,8 @@ def completeTask(taskID):
     return
 
 
-@app.route('/skyscanner/')
-def haeLento():
-    tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-    aika = datetime.datetime.strftime(tomorrow,"%Y-%m-%d")
-    params = {
-        "apiKey" : "tu705911788977665986179742030436"
-    }
-    headers = {
-        "Accept" : "application/json"
-    }
-    url = "http://partners.api.skyscanner.net/apiservices/browseroutes/v1.0/FI/EUR/en-GB/FI/anywhere/"+aika
-
-
-    response = requests.get(url,params=params,headers=headers)
-    json_in = response.json()
-    hinta = 1000
-    lahtomaa = 'Helsinki'
-    kohdemaa = 'Dubai'
-    aika = '10:00:00'
-
-    if 'Quotes' in json_in:
-
-        kohdelista = json_in['Quotes']
-        #print(len(kohdelista))
-        #kohde = kohdelista[4]
-
-        kohde = kohdelista[randrange(0,len(kohdelista))]
-
-        hinta = str(kohde['MinPrice'])
-        lahtoID = kohde['OutboundLeg']['OriginId']
-        kohdeID = kohde['OutboundLeg']['DestinationId']
-        aika = str(kohde['QuoteDateTime']).split('T')
-        aika = aika[1]
-
-        for place in json_in['Places']:
-            if (place['PlaceId'] == lahtoID):
-                 lahtomaa = place['Name']
-            elif (place['PlaceId'] == kohdeID):
-                kohdemaa = place['Name']
-
-    output = json.dumps({'start':lahtomaa, 'stop':kohdemaa, 'aika':aika, 'hinta':hinta})
-    print(output)
-
-    return output
 
 if __name__ == '__main__':
 
-    app.run(host='127.0.0.1', port= 5012,debug=True)
+    app.run(host='127.0.0.1', port= 5000,debug=True)
 
