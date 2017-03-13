@@ -6,6 +6,9 @@ from random import randrange
 
 app = Flask(__name__)
 
+# Kirjanpito käynnissä oleville prosesseille
+liveProcesses = []
+
 headers_jbpm = {
         "Accept": "application/json",
         "Authorization": "Basic YWRtaW46YWRtaW4="
@@ -14,7 +17,7 @@ headers_jbpm = {
 @app.route('/')
 def index():
 
-    #print(app.url_map)
+    #print(app.url_map)!
     return render_template('index.html')
 
 
@@ -32,15 +35,8 @@ def startProcess():
     # Otetaan porcessID talteen
     processID = json_in["id"]
 
-    # Haetaan seuraava taskID
-
-    #Kokeilua ---------------------------------------------------------------
-    taskID = (nextTask(processID))
-    startTask(taskID)
-    completeTask(taskID)
-    taskID = (nextTask(processID))
-    startTask(taskID)
-    completeTask(taskID)
+    #pidetään kirjaa
+    liveProcesses.append(processID)
 
     return json.dumps({"ProcessID": processID})
 
@@ -51,12 +47,13 @@ def abortProcess():
     #Prosessi ID voidaan laittaa POST parametrina client puolelta!
     processID = request.args.get("ID")
 
-    print(processID)
+    # keskeytetään prosessi jos käynnissä
+    if (processID in liveProcesses):
 
-    #keskeytetään prosessi
-    url = "http://localhost:8080/jbpm-console/rest/runtime/com.demounit:ASE-6050-Demo:1.0/process/instance/"+str(processID)+"/abort"
-    response = requests.post(url, headers=headers_jbpm)
-    json_in = response.json()
+        liveProcesses.remove(processID)
+        url = "http://localhost:8080/jbpm-console/rest/runtime/com.demounit:ASE-6050-Demo:1.0/process/instance/"+processID+"/abort"
+        response = requests.post(url, headers=headers_jbpm)
+        # json_in = response.json()
 
     return 'aborted'
 
@@ -94,12 +91,13 @@ def haeLento():
     json_in = response.json()
     offer = chooseOffer(json_in)
 
+
     """Suoritetaan eka taski tässä"""
-    taskID = (nextTask(processID))
+    taskID = nextTask(processID)
     startTask(taskID)
     completeTask(taskID)
 
-    return offer
+    return json.dumps(offer)
 
 def chooseOffer(json_in):
 
@@ -127,7 +125,7 @@ def chooseOffer(json_in):
             elif (place['PlaceId'] == destinationID):
                 destination = place['Name']
 
-    offer = json.dumps({'start': origin, 'stop': destination, 'aika': time, 'hinta': price})
+    offer = {'start': origin, 'stop': destination, 'aika': time, 'hinta': price}
     print(offer)
 
     return offer
@@ -136,32 +134,30 @@ def startTask(taskID):
 
     #Aloita jbpm task [POST]
 
-    url = "http://localhost:8080/jbpm-console/rest/task/"+str(taskID)+"/start"
+    url = "http://localhost:8080/jbpm-console/rest/task/"+taskID+"/start"
     response = requests.post(url, headers=headers_jbpm)
-    json_in = response.json()
+    # json_in = response.json()
 
     return
 
 def nextTask(processID):
 
-    url = "http://localhost:8080/jbpm-console/rest/task/query?processInstanceId=" + str(processID)
+    url = "http://localhost:8080/jbpm-console/rest/task/query?processInstanceId=" + processID
     response = requests.get(url, headers=headers_jbpm)
     json_in = response.json()
 
     # Parsitaan talteen seuraava processId:n taski
-
-    # Toimiiko...
     nextTaskID = json_in["taskSummaryList"][len(json_in["taskSummaryList"])-1]["id"]
 
     print(nextTaskID)
-    return nextTaskID
+    return str(nextTaskID)
 
 def completeTask(taskID):
 
     #Suorita jbpm task [POST]
-    url = "http://localhost:8080/jbpm-console/rest/task/" + str(taskID) + "/complete/?map_hyvaksytty_out=true"
+    url = "http://localhost:8080/jbpm-console/rest/task/" + taskID + "/complete/?map_hyvaksytty_out=true"
     response = requests.post(url, headers=headers_jbpm)
-    json_in = response.json()
+    # json_in = response.json()
 
     return
 

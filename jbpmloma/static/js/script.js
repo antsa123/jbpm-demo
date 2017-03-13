@@ -18,8 +18,9 @@ $(window).bind("beforeunload", function() {
 $(document).ready(function() {
 	
 	function tallennaID(data) {
-		obj = JSON.parse(data)
+		obj = JSON.parse(data);
 		ProcessID = obj.ProcessID;
+		console.log(ProcessID)
 	}
 	
 	// Prosessin aloitus TÄSSÄ VOISI VASTAUKSENA TALLENTAA PROSESSI IDN
@@ -49,6 +50,7 @@ $(document).ready(function() {
 			$("#hintajalahtoaika").html("Sinut ohjattaisiin lipun ostoon kokoversiossa.");
 			$("#sailio2").fadeOut();
 			$("#sailio3").fadeIn();
+			$("#ostonappi").hide();
 	}
 	
 	$("#nappi").click(function(){
@@ -57,6 +59,9 @@ $(document).ready(function() {
 		// GET skyscanner APIsta
 		$.ajax({
 			type: "GET",
+			data: {
+				"ID": ProcessID // Tässä lähetetään prosessin ID parametrina
+			},
 			url: "/skyscanner",
 			success: matkavastaus
 		});
@@ -67,7 +72,10 @@ $(document).ready(function() {
 		$("#sailio2").fadeIn();
 		// Prosessin lopetus
 		$.ajax({
-			type: "POST",
+			type: "GET",
+			data: {
+				"ID": ProcessID // Tässä lähetetään prosessin ID parametrina
+			},
 			url: "/finish",
 			success: ostovastaus
 		})
