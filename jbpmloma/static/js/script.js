@@ -18,12 +18,13 @@ $(window).bind("beforeunload", function() {
 $(document).ready(function() {
 	
 	function tallennaID(data) {
-		ProcessID = data.ProcessID;
+		obj = JSON.parse(data)
+		ProcessID = obj.ProcessID;
 	}
 	
 	// Prosessin aloitus TÄSSÄ VOISI VASTAUKSENA TALLENTAA PROSESSI IDN
 	$.ajax({
-		type: "POST",
+		type: "GET",
 		url: "/start", //mikä approute
 		success: tallennaID
 		

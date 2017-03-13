@@ -42,16 +42,12 @@ def startProcess():
     startTask(taskID)
     completeTask(taskID)
 
-    """TÄSSÄ VOITAISIIN PALAUTTAA PROSESSI ID CLIENT PUOLELLE"""
-    #JSONissa?
-    return json.dumps({"procssID": processID})
+    return json.dumps({"ProcessID": processID})
 
 
 @app.route('/abort')
 def abortProcess():
     
-    print("taalla")
-
     #Prosessi ID voidaan laittaa POST parametrina client puolelta!
     processID = request.args.get("ID")
 
@@ -99,9 +95,9 @@ def haeLento():
     offer = chooseOffer(json_in)
 
     """Suoritetaan eka taski tässä"""
-    #nextTask(processID)
-    #startTask(processID)
-    #completeTask(processID)
+    taskID = (nextTask(processID))
+    startTask(taskID)
+    completeTask(taskID)
 
     return offer
 
@@ -173,5 +169,5 @@ def completeTask(taskID):
 
 if __name__ == '__main__':
 
-    app.run(host='127.0.0.1', port= 5000,debug=True)
+    app.run(host='127.0.0.1', port=5000,debug=True)
 
