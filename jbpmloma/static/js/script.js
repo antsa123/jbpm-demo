@@ -34,8 +34,8 @@ $(document).ready(function() {
 	function matkavastaus(data) {
 		obj = JSON.parse(data);
 		if (obj.stop == "None") {
-			$("#maaranpaa").text("Hitsi!")
-			$("#hintajalahtoaika").html("Äkkilähtöjä ei löytynyt tänään <br> :(")
+			$("#maaranpaa").text("Hitsi!");
+			$("#hintajalahtoaika").html("Äkkilähtöjä ei löytynyt tänään <br> :(");
 		}
 		else {
 			var start = obj.start;
@@ -51,11 +51,10 @@ $(document).ready(function() {
 	
 	// Suoritetaan, kun saadaan prosessin lopetuksen vastaus
 	function ostovastaus() {
-			$("#maaranpaa").text("Hyvää matkaa!");
-			$("#hintajalahtoaika").html("Sinut ohjattaisiin lipun ostoon kokoversiossa.");
 			$("#sailio2").fadeOut();
-			$("#sailio3").fadeIn();
-			$("#ostonappi").hide();
+			$("#sailio4").fadeIn();
+
+
 	}
 	
 	$("#nappi").click(function(){
@@ -101,13 +100,12 @@ $(document).ready(function() {
 			url: "/start", //mikä approute
 			success: function(data) {
 				tallennaID(data);
-				$("#sailio1").fadeIn();
+				$("#sailio2").fadeOut();
+
+				$("#sailio1").delay(100).fadeIn();
+
 			}
 		});
 	});
-		
-	});
-		
-	}
-	
+
 });

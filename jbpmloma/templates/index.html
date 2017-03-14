@@ -11,7 +11,7 @@
 .divider{
     width: auto;
     height: 5px;
-    display: block;
+
 }
 
 #sailio1 {
@@ -46,12 +46,29 @@
 	left: 50%;
 	top: 50%;
 	width: 400px;
-	height: 380px;
+	height: 420px;
 	z-index: 11;
 	border: 5px solid white;
 	border-radius: 3%;
 	padding: 15px;
-	margin-top: -190px;
+	margin-top: -210px;
+	margin-left: -200px;
+	text-align: center;
+	font-size: 25px;
+	display: none;
+}
+
+#sailio4 {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 400px;
+	height: 250px;
+	z-index: 11;
+	border: 5px solid white;
+	border-radius: 3%;
+	padding: 15px;
+	margin-top: -125px;
 	margin-left: -200px;
 	text-align: center;
 	font-size: 25px;
@@ -184,11 +201,16 @@
 		<button class="w3-button w3-indigo w3-round-large" id="ostonappi">
 			Osta matka!
 		</button>
-		<div class="divider"/>
+        <div class="divider"> </div>
+
 		<button class="w3-button w3-indigo w3-round-large" id="tarjousnappi">
 			Uusi tarjous
 		</button>
 	</div>
+    <div class="w3-container w3-blue" id="sailio4">
+        <h2> Hyvää Matkaa!</h2>
+        <p> Sinut ohjattaisiin lipun ostoon kokoversiossa. </p>
+    </div>
 </body>
 
 

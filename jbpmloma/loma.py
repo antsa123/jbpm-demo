@@ -2,7 +2,8 @@ from flask import Flask, render_template, request
 import requests
 import datetime
 import json
-from random import randrange
+from random import randrange, randint, choice
+import sys
 
 app = Flask(__name__)
 
@@ -33,7 +34,7 @@ def startProcess():
     json_in = response.json()
 
     # Otetaan porcessID talteen
-    processID = json_in["id"]
+    processID = str(json_in["id"])
 
     #pidetään kirjaa
     liveProcesses.append(processID)
@@ -46,10 +47,12 @@ def abortProcess():
     
     #Prosessi ID voidaan laittaa POST parametrina client puolelta!
     processID = request.args.get("ID")
+    print(liveProcesses)
+    print(type(processID))
 
     # keskeytetään prosessi jos käynnissä
     if (processID in liveProcesses):
-
+        print('moi')
         liveProcesses.remove(processID)
         url = "http://localhost:8080/jbpm-console/rest/runtime/com.demounit:ASE-6050-Demo:1.0/process/instance/"+processID+"/abort"
         response = requests.post(url, headers=headers_jbpm)
@@ -101,12 +104,13 @@ def haeLento():
 
 def chooseOffer(json_in):
 
-    price = 1000
+    price = (100 + randint(0,1000))/ randint(1,4)
     origin = 'Helsinki'
-    destination = 'Dubai'
+    destination = choice(['None', 'Dubai', 'New York', 'Tokio'])
     time = '10:00:00'
 
-    if 'Quotes' in json_in:
+    # Onko tänään tarjouksia
+    if len(json_in['Quotes']) != 0:
 
         destinationList = json_in['Quotes']
 
@@ -165,5 +169,5 @@ def completeTask(taskID):
 
 if __name__ == '__main__':
 
-    app.run(host='127.0.0.1', port=5000,debug=True)
+    app.run(host='127.0.0.1', port=int(sys.argv[1]),debug=True)
 
