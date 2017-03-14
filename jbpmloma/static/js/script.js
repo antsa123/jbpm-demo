@@ -34,12 +34,18 @@ $(document).ready(function() {
 	// Suoritetaan, kun saadaan vastaus skyscannerilta
 	function matkavastaus(data) {
 		obj = JSON.parse(data);
-		var start = obj.start;
-		var stop = obj.stop;
-		var aika = obj.aika;
-		var hinta = obj.hinta;
-		$("#maaranpaa").text(start + " - " + stop);
-		$("#hintajalahtoaika").html("Hinta: " + hinta +" €" + "<br>Lähtö huomenna kello " + aika);
+		if (obj.stop == "None") {
+			$("#maaranpaa").text("Hitsi!")
+			$("#hintajalahtoaika").html("Äkkilähtöjä ei löytynyt tänään <br> :(")
+		}
+		else {
+			var start = obj.start;
+			var stop = obj.stop;
+			var aika = obj.aika;
+			var hinta = obj.hinta;
+			$("#maaranpaa").text(start + " - " + stop);
+			$("#hintajalahtoaika").html("Hinta: " + hinta +" €" + "<br>Lähtö huomenna kello " + aika);
+		}
 		$("#sailio2").fadeOut();
 		$("#sailio3").fadeIn();
     }
