@@ -20,7 +20,7 @@ $(document).ready(function() {
 	function tallennaID(data) {
 		obj = JSON.parse(data);
 		ProcessID = obj.ProcessID;
-		console.log(ProcessID)
+		$("#sailio1").fadeIn();
 	}
 	
 	// Prosessin aloitus TÄSSÄ VOISI VASTAUKSENA TALLENTAA PROSESSI IDN
@@ -86,5 +86,26 @@ $(document).ready(function() {
 			success: ostovastaus
 		})
 	});
+	
+	$("#tarjousnappi").click(function(){
+		$("#sailio3").fadeOut();
+		$("#sailio2").fadeIn();
+		$.ajax({
+			type: "GET",
+			data: {
+				"ID": ProcessID // Tässä lähetetään prosessin ID parametrina
+			},
+			url: "/abort"
+		});
+		$.ajax({
+			type: "GET",
+			url: "/start", //mikä approute
+			success: tallennaID
+		});
+	});
+		
+	});
+		
+	}
 	
 });
