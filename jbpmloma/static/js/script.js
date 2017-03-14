@@ -20,7 +20,6 @@ $(document).ready(function() {
 	function tallennaID(data) {
 		obj = JSON.parse(data);
 		ProcessID = obj.ProcessID;
-		$("#sailio1").fadeIn();
 	}
 	
 	// Prosessin aloitus TÄSSÄ VOISI VASTAUKSENA TALLENTAA PROSESSI IDN
@@ -100,7 +99,10 @@ $(document).ready(function() {
 		$.ajax({
 			type: "GET",
 			url: "/start", //mikä approute
-			success: tallennaID
+			success: function(data) {
+				tallennaID(data);
+				$("#sailio1").fadeIn();
+			}
 		});
 	});
 		
