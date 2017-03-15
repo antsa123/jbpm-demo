@@ -22,10 +22,10 @@ $(document).ready(function() {
 		ProcessID = obj.ProcessID;
 	}
 	
-	// Prosessin aloitus TÄSSÄ VOISI VASTAUKSENA TALLENTAA PROSESSI IDN
+	// Prosessin aloitus
 	$.ajax({
 		type: "GET",
-		url: "/start", //mikä approute
+		url: "/start",
 		success: tallennaID
 		
 	});
@@ -64,7 +64,8 @@ $(document).ready(function() {
 		$.ajax({
 			type: "GET",
 			data: {
-				"ID": ProcessID // Tässä lähetetään prosessin ID parametrina
+				"ID": ProcessID,// Tässä lähetetään prosessin ID parametrina
+				"Result" : true
 			},
 			url: "/skyscanner",
 			success: matkavastaus
@@ -78,7 +79,8 @@ $(document).ready(function() {
 		$.ajax({
 			type: "GET",
 			data: {
-				"ID": ProcessID // Tässä lähetetään prosessin ID parametrina
+				"ID": ProcessID,// Tässä lähetetään prosessin ID parametrina
+				"Result" : true
 			},
 			url: "/finish",
 			success: ostovastaus
@@ -91,9 +93,10 @@ $(document).ready(function() {
 		$.ajax({
 			type: "GET",
 			data: {
-				"ID": ProcessID // Tässä lähetetään prosessin ID parametrina
+				"ID": ProcessID ,// Tässä lähetetään prosessin ID parametrina
+				"Result" : false
 			},
-			url: "/abort"
+			url: "/finish"
 		});
 		$.ajax({
 			type: "GET",
