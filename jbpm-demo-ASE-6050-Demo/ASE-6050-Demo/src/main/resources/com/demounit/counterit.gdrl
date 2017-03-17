@@ -1,5 +1,0 @@
-package com.demounit;
-
-global java.lang.Number Katsottu;
-global java.lang.Number Lomalle;
-global java.lang.Number Lomaton;
