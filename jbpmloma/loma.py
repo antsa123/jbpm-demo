@@ -83,18 +83,29 @@ def haeLento():
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     time = datetime.datetime.strftime(tomorrow,"%Y-%m-%d")
 
-    params = {
-        "apiKey" : "tu705911788977665986179742030436"
-    }
-    headers = {
-        "Accept" : "application/json"
-    }
+    print(len(sys.argv))
+    if (len(sys.argv) == 2):
+        params = {
+            "apiKey" : "tu705911788977665986179742030436"
+        }
+        headers = {
+            "Accept" : "application/json"
+        }
 
-    url = "http://partners.api.skyscanner.net/apiservices/browseroutes/v1.0/FI/EUR/en-GB/FI/anywhere/"+time
+        url = "http://partners.api.skyscanner.net/apiservices/browseroutes/v1.0/FI/EUR/en-GB/FI/anywhere/"+time
 
-    response = requests.get(url,params=params,headers=headers)
-    json_in = response.json()
-    offer = chooseOffer(json_in)
+        response = requests.get(url,params=params,headers=headers)
+        json_in = response.json()
+        offer = chooseOffer(json_in)
+
+    # Demoa varten --> voidaan ohjata tänne antamalla ylimääräinen sys.argv
+    else:
+        demo_prices = ["54", "115", "270", "334", "701", "1302" ]
+        demo_destinations = ["Copenhagen", "Berlin", "Madeira", "Moscow", "Osaka", "Auckland"]
+        demo_departures = ["07:45", "11:30", "16:20", "18:15", "01:00", "19:00"]
+
+        pick = randrange(0,len(demo_prices))
+        offer = {'start': "Helsinki-Vantaa", 'stop': demo_destinations[pick], 'aika': demo_departures[pick], 'hinta': demo_prices[pick]}
 
     # Suoritetaan eka taski tässä
     taskID = nextTask(processID)
@@ -169,5 +180,5 @@ def completeTask(taskID,Result):
 
 if __name__ == '__main__':
 
-    app.run(host='127.0.0.1', port=int(sys.argv[1]),debug=True)
+    app.run(host='0.0.0.0', port=int(sys.argv[1]), threaded=True, debug=True)
 
