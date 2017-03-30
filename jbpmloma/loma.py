@@ -100,9 +100,9 @@ def haeLento():
 
     # Demoa varten --> voidaan ohjata tänne antamalla ylimääräinen sys.argv
     else:
-        demo_prices = ["54", "115", "270", "334", "701", "1302" ]
-        demo_destinations = ["Copenhagen", "Berlin", "Madeira", "Moscow", "Osaka", "Auckland"]
-        demo_departures = ["07:45", "11:30", "16:20", "18:15", "01:00", "19:00"]
+        demo_prices = ["54", "115", "270", "334", "701", "1302", "2700" ]
+        demo_destinations = ["Copenhagen", "Berlin", "Madeira", "Moscow", "Osaka", "Auckland", "Tahiti"]
+        demo_departures = ["07:45", "11:30", "16:20", "18:15", "01:00", "19:00", "04:35"]
 
         pick = randrange(0,len(demo_prices))
         offer = {'start': "Helsinki-Vantaa", 'stop': demo_destinations[pick], 'aika': demo_departures[pick], 'hinta': demo_prices[pick]}
