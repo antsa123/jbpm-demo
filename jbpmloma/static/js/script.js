@@ -1,5 +1,6 @@
 
 var ProcessID = 0;
+var Destination = "Nowhere";
 
 // Kutsutaan, kun ikkuna suljetaan tai sivulta poistutaan
 $(window).bind("beforeunload", function() {
@@ -40,6 +41,7 @@ $(document).ready(function() {
 		else {
 			var start = obj.start;
 			var stop = obj.stop;
+			Destination = obj.stop;
 			var aika = obj.aika;
 			var hinta = obj.hinta;
 			$("#maaranpaa").text(start + " - " + stop);
@@ -80,7 +82,8 @@ $(document).ready(function() {
 			type: "GET",
 			data: {
 				"ID": ProcessID,// Tässä lähetetään prosessin ID parametrina
-				"Result" : true
+				"Result" : true,
+				"Destination" : Destination
 			},
 			url: "/finish",
 			success: ostovastaus
@@ -94,7 +97,8 @@ $(document).ready(function() {
 			type: "GET",
 			data: {
 				"ID": ProcessID ,// Tässä lähetetään prosessin ID parametrina
-				"Result" : false
+				"Result" : false,
+				"Destination" : Destination
 			},
 			url: "/finish"
 		});

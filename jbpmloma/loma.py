@@ -66,11 +66,12 @@ def finishProcess():
 
     #Lippu ostettu
     processID = request.args.get("ID")
-    Result = request.args.get("Result")
+    result = request.args.get("Result")
+    destination = request.args.get("Destination")
 
     taskID = (nextTask(processID))
     startTask(taskID)
-    completeTask(taskID,Result)
+    completeTask(taskID,result,destination)
 
     return 'finished'
 
@@ -78,7 +79,8 @@ def finishProcess():
 def haeLento():
 
     processID = request.args.get("ID")
-    Result = request.args.get("Result")
+    result = request.args.get("Result")
+
 
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     time = datetime.datetime.strftime(tomorrow,"%Y-%m-%d")
@@ -110,7 +112,7 @@ def haeLento():
     # Suoritetaan eka taski tässä
     taskID = nextTask(processID)
     startTask(taskID)
-    completeTask(taskID,Result)
+    completeTask(taskID,result,offer['stop'])
 
     return json.dumps(offer)
 
@@ -168,11 +170,10 @@ def nextTask(processID):
 
     return str(nextTaskID)
 
-def completeTask(taskID,Result):
-
+def completeTask(taskID,result,destination):
 
     #Suoritetaan jbpm task
-    url = url_jbpm+"rest/task/" + taskID + "/complete/?map_hyvaksytty_out="+Result
+    url = url_jbpm+"rest/task/" + taskID + "/complete/?map_hyvaksytty_out="+result+"&map_maaranpaa_out="+destination
     response = requests.post(url, headers=headers_jbpm)
     # json_in = response.json()
 
